@@ -16,14 +16,16 @@ class JsonAgentWrapper:
     def __init__(self, agent):
         self.agent = agent
         self.agent_id = getattr(agent, "agent_id", None)
-        self.model = getattr(agent, "model", None)  # Forward model attribute
+        self.model = getattr(agent, "model", None)
+        self.name = getattr(agent, "name", None)  # Forward name attribute
 
     def run(self, *args, **kwargs):
         response = self.agent.run(*args, **kwargs)
         content = getattr(response, "content", response)
-        if hasattr(content, "json"):
-            return AgentResponse(content.json())
+        if hasattr(content, "model_dump_json"):
+            return AgentResponse(content.model_dump_json())
         elif hasattr(content, "dict"):
+            import json
             return AgentResponse(json.dumps(content.dict()))
         return AgentResponse(str(content))
 
