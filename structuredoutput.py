@@ -34,4 +34,4 @@ movie_agent = Agent(
     response_model=MovieScript,
 )
 
-movie_agent.print_response("New York")
+movie_agent.print_response("Mumbai")
